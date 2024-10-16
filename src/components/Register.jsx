@@ -4,6 +4,8 @@ import { auth, db } from "../firebase-config";
 import { useNavigate, Link } from "react-router-dom";
 import { doc, setDoc } from "firebase/firestore"; // Cambiamos addDoc por setDoc
 import '../styles/LoginRegister.css';
+import Spinner from "./spinner";
+
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -12,10 +14,12 @@ const Register = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // Estado para el spinner
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setLoading(true); // Mostrar el spinner
 
     if (password !== confirmPassword) {
       setError("Las contraseñas no coinciden");
@@ -44,12 +48,19 @@ const Register = () => {
       navigate("/dashboard");
     } catch (err) {
       setError("Error en el registro: " + err.message);
+    }finally{
+      setLoading(false); // Ocultar el spinner
     }
+
+
   };
 
   return (
     <div className="login-register-container">
       <h2>Crear cuenta</h2>
+      {loading ? ( // Mostrar el spinner mientras carga
+        <Spinner />
+      ) : (
       <form onSubmit={handleRegister}>
         <input
           type="text"
@@ -88,7 +99,7 @@ const Register = () => {
         />
         <button type="submit">Registrarse</button>
         {error && <p className="error-message">{error}</p>}
-      </form>
+      </form>)}
       <p className="info-text">
         ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
       </p>
