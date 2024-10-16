@@ -1,0 +1,119 @@
+/* Estilos del Banner */
+.banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f5f5f5;
+    padding: 40px 20px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    overflow: hidden;
+    flex-wrap: wrap; /* Permite que los elementos se apilen en pantallas pequeñas */
+}
+
+.banner-text {
+    flex: 1;
+    text-align: center;
+    padding: 90px;
+    box-sizing: border-box;
+}
+
+.banner-text h1 {
+    font-size: 42px;
+    color: #0073E6;
+    font-family: "Permanent Marker", cursive;
+    font-weight: 800;
+    font-style: normal;
+    margin-bottom: 10px;
+}
+
+.banner-text p {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.cta-button {
+    background-color: #0073E6;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.cta-button:hover {
+    background-color: #005bb5;
+}
+
+.banner-scene {
+    flex: 1;
+    width: 600px;
+    height: 600px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Media query para pantallas más pequeñas (tablets y móviles) */
+@media (max-width: 1024px) {
+    .banner {
+        flex-direction: column; /* Apila los elementos uno debajo del otro */
+        padding: 20px;
+    }
+
+    .banner-text {
+        margin-bottom: 20px;
+    }
+
+    .banner-text h1 {
+        font-size: 36px; /* Reduce el tamaño del texto */
+    }
+
+    .banner-text p {
+        font-size: 18px;
+    }
+
+    .cta-button {
+        font-size: 16px;
+        padding: 10px 20px; /* Botón más pequeño */
+    }
+
+    .banner-scene {
+        width: 500px; /* Reduce el tamaño del canvas */
+        height: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .banner-text h1 {
+        font-size: 32px; /* Reduce el tamaño del texto */
+    }
+
+    .banner-text p {
+        font-size: 16px;
+    }
+
+    .cta-button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    .banner-scene {
+        width: 400px; /* Ajusta el tamaño del canvas */
+        height: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .banner-scene {
+        width: 300px; /* Tamaño aún más pequeño para móviles */
+        height: 300px;
+    }
+}

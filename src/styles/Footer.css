@@ -1,0 +1,28 @@
+
+  /* Estilos del Footer */
+  footer {
+    background-color: #0073E6;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+  }
+  
+  .footer-links {
+    margin-bottom: 10px;
+  }
+  
+  .footer-links a {
+    color: white;
+    font-size: 14px;
+    margin: 0 10px;
+  }
+  
+  .footer-links a:hover {
+    text-decoration: underline;
+  }
+  
+  footer p {
+    font-size: 14px;
+    margin: 0;
+  }
+  

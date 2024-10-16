@@ -1,0 +1,130 @@
+/* Estilos del Header */
+header {
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Permanent Marker", cursive;
+  font-weight: 400;
+  font-style: normal;
+  color: #00AEEF;
+  
+}
+
+.logo img {
+  height: 90px;
+  width: 90px;
+}
+
+.menu {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  transition: max-height 0.3s ease;
+}
+
+.menu li {
+  position: relative;
+}
+
+.menu li a {
+  font-size: 16px;
+  color: #333;
+  font-weight: bold;
+  padding: 5px;
+  text-decoration: none;
+}
+
+.menu li a:hover,
+.menu li a.selected {
+  color: #00AEEF;
+  border-bottom: 2px solid #00AEEF; /* Subrayar */
+}
+
+.cart-icon {
+  font-size: 20px;
+  color: #00AEEF;
+}
+
+/* Estilo del menú hamburguesa minimalista */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 24px;
+  width: 30px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.hamburger span {
+  background-color: #333;
+  height: 3px;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+/* Animación del ícono de hamburguesa */
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Cuando el menú está expandido */
+.menu.open {
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.menu.open li {
+  margin-bottom: 10px;
+}
+
+.menu.open li a {
+  font-size: 18px;
+  width: 100%;
+  text-align: right;
+}
+
+/* Media queries para pantallas pequeñas */
+@media (max-width: 768px) {
+  .menu {
+    display: none;
+    flex-direction: column;
+    max-height: 0;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .menu.open {
+    display: flex;
+    max-height: 300px; /* Altura máxima cuando está abierto */
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
