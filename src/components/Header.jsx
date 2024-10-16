@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom"; // Importar useNavigate
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { getFirestore, query, collection, where, getDocs } from "firebase/firestore";
 import "../styles/Header.css";
@@ -10,9 +10,11 @@ const Header = () => {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [userName, setUserName] = useState("");
   const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState(""); // Agregar estado para el rol
   const auth = getAuth();
   const db = getFirestore();
   const userMenuRef = useRef(null);
+  const navigate = useNavigate(); // Inicializar useNavigate
 
   // Escuchar cambios en la autenticación
   useEffect(() => {
@@ -27,10 +29,12 @@ const Header = () => {
         querySnapshot.forEach((doc) => {
           const userData = doc.data();
           setUserName(userData.name);  // Traer el nombre del usuario
+          setUserRole(userData.role);   // Obtener el rol del usuario
         });
       } else {
         setUserLoggedIn(false);
         setUserName("");
+        setUserRole(""); // Resetear el rol si no hay usuario
       }
     });
 
@@ -42,7 +46,9 @@ const Header = () => {
     await signOut(auth);
     setUserLoggedIn(false);
     setUserName("");
+    setUserRole(""); // Resetear el rol al cerrar sesión
     setUserMenuOpen(false);
+    window.location.reload(); // Refrescar la pantalla después de cerrar sesión
   };
 
   const toggleMenu = () => {
@@ -77,6 +83,16 @@ const Header = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [userMenuOpen]);
+
+  // Función para redirigir al dashboard según el rol del usuario
+  const handleAccountClick = () => {
+    if (userRole === "admin") {
+      navigate("/admin-dashboard"); // Ruta para admin
+    } else if (userRole === "client") {
+      navigate("/dashboard"); // Ruta para cliente
+    }
+    setUserMenuOpen(false); // Cerrar el menú después de redirigir
+  };
 
   return (
     <header>
@@ -121,15 +137,8 @@ const Header = () => {
               </div>
               <div className={`user-dropdown ${userMenuOpen ? "open" : ""}`}>
                 <ul>
-                  <li>
-                    <NavLink to="/mis-compras" onClick={closeMenu}>
-                      Mis compras
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/mi-cuenta" onClick={closeMenu}>
-                      Mi cuenta
-                    </NavLink>
+                  <li onClick={handleAccountClick}>
+                    Mi cuenta
                   </li>
                   <li onClick={handleLogout}>
                     Cerrar sesión

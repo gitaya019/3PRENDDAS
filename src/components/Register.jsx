@@ -1,48 +1,46 @@
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../firebase-config"; // Asegúrate de importar Firestore
+import { auth, db } from "../firebase-config";
 import { useNavigate, Link } from "react-router-dom";
-import { collection, addDoc } from "firebase/firestore"; // Importa Firestore
+import { doc, setDoc } from "firebase/firestore"; // Cambiamos addDoc por setDoc
 import '../styles/LoginRegister.css';
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [name, setName] = useState(""); // Nuevo campo para el nombre
-  const [phone, setPhone] = useState(""); // Nuevo campo para el teléfono
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    // Validar que las contraseñas coinciden
     if (password !== confirmPassword) {
       setError("Las contraseñas no coinciden");
       return;
     }
 
-    // Validar que la contraseña tenga al menos 6 caracteres
     if (password.length < 6) {
       setError("La contraseña debe tener al menos 6 caracteres");
       return;
     }
 
     try {
-      // Crear el usuario en Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Guardar datos adicionales en Firestore
-      await addDoc(collection(db, "users"), {
-        uid: user.uid, // Almacenar el UID del usuario
+      // Guardar los datos del usuario en Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
         name: name,
         phone: phone,
         email: email,
+        role: "cliente" // Asignar el rol predeterminado como "cliente"
       });
 
-      // Redirigir al dashboard
+      // Redirigir al dashboard de cliente
       navigate("/dashboard");
     } catch (err) {
       setError("Error en el registro: " + err.message);

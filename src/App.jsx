@@ -1,25 +1,43 @@
 // App.jsx
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import Inicio from './components/inicio';
-import Login from './components/login';
-import Footer from './components/Footer';
-import Register from './components/Register';
-import ResetPassword from './components/ResetPassword';
-import './styles/App.css';
-
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import Inicio from "./components/inicio";
+import Footer from "./components/Footer";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import ResetPassword from "./components/ResetPassword";
+import "./styles/App.css";
+import AdminDashboard from "./components/AdminDashboard";
+import UserDashboard from "./components/UserDashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
     <Router>
       <div className="App">
         <Header />
-          <Routes>
-            <Route path="/" element={<Inicio />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-          </Routes>
+        <Routes>
+          <Route path="/" element={<Inicio />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route
+            path="/admin-dashboard"
+            element={
+              <ProtectedRoute roleRequired="admin">
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute roleRequired="cliente">
+                <UserDashboard />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
         <Footer />
       </div>
     </Router>

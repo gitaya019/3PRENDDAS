@@ -1,8 +1,8 @@
-// components/Login.js
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase-config";
+import { auth, db } from "../firebase-config"; // Importamos Firestore para obtener el rol
 import { useNavigate, Link } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
 import '../styles/LoginRegister.css';
 
 const Login = () => {
@@ -13,14 +13,30 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     if (email === "" || password === "") {
       setError("Todos los campos son obligatorios");
       return;
     }
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate("/dashboard");
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Obtener el rol del usuario desde Firestore
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
+        if (userData.role === "admin") {
+          navigate("/admin-dashboard"); // Redirigir al dashboard de admin
+        } else {
+          navigate("/dashboard"); // Redirigir al dashboard de cliente
+        }
+      } else {
+        console.log("No se encontraron datos del usuario");
+      }
     } catch (err) {
       setError("Error en el inicio de sesión: " + err.message);
     }
