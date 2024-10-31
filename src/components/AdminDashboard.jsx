@@ -8,7 +8,7 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { onAuthStateChanged } from "firebase/auth";
 import "../styles/AdminDashboard.css";
@@ -181,12 +181,28 @@ const AdminDashboard = () => {
 
   const handleDeleteProduct = async () => {
     if (selectedProduct) {
-      await deleteDoc(doc(db, "products", selectedProduct.id));
-      setIsDeleteProductModalOpen(false);
-      fetchProducts();
+      try {
+        // Get the file reference from the fileURL
+        const fileURL = selectedProduct.fileURL;
+        const fileRef = ref(storage, fileURL);
+  
+        // Delete the file from storage
+        await deleteObject(fileRef);
+        console.log("File deleted successfully");
+  
+        // Now delete the product document from Firestore
+        await deleteDoc(doc(db, "products", selectedProduct.id));
+        console.log("Product deleted successfully");
+        
+        // Close the modal and refresh the product list
+        setIsDeleteProductModalOpen(false);
+        fetchProducts();
+      } catch (error) {
+        console.error("Error deleting product:", error);
+        alert("Hubo un error eliminando el producto.");
+      }
     }
   };
-
   useEffect(() => {
     fetchProducts();
     fetchUsers();
