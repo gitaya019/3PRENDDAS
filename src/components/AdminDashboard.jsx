@@ -30,7 +30,8 @@ const AdminDashboard = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isEditUserModalOpen, setIsEditUserModalOpen] = useState(false);
   const [isDeleteUserModalOpen, setIsDeleteUserModalOpen] = useState(false);
-  const [isDeleteProductModalOpen, setIsDeleteProductModalOpen] = useState(false);
+  const [isDeleteProductModalOpen, setIsDeleteProductModalOpen] =
+    useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
 
@@ -56,24 +57,32 @@ const AdminDashboard = () => {
     });
   }, []);
 
-const validateForm = () => {
-  // Verificar que todos los campos estén llenos
-  if (!productTitle || !description || !price || !size || !stock || !file || !gender) {
-    alert("Todos los campos son obligatorios.");
-    return false;
-  }
+  const validateForm = () => {
+    // Verificar que todos los campos estén llenos
+    if (
+      !productTitle ||
+      !description ||
+      !price ||
+      !size ||
+      !stock ||
+      !file ||
+      !gender
+    ) {
+      alert("Todos los campos son obligatorios.");
+      return false;
+    }
 
-  // Comprobar que el precio y el stock sean números
-  const numericPrice = parseFloat(price.replace(/[^\d.-]/g, ""));
-  const numericStock = parseInt(stock, 10);
+    // Comprobar que el precio y el stock sean números
+    const numericPrice = parseFloat(price.replace(/[^\d.-]/g, ""));
+    const numericStock = parseInt(stock, 10);
 
-  if (isNaN(numericPrice) || isNaN(numericStock)) {
-    alert("Precio y stock deben ser números.");
-    return false;
-  }
+    if (isNaN(numericPrice) || isNaN(numericStock)) {
+      alert("Precio y stock deben ser números.");
+      return false;
+    }
 
-  return true;
-};
+    return true;
+  };
 
   const handleFileChange = (e) => setFile(e.target.files[0]);
 
@@ -245,16 +254,20 @@ const validateForm = () => {
                     </button>
                   </div>
                   <div className="size-buttons">
-                    {(sizeType === "letter" ? letterSizes : numberSizes).map((s) => (
-                      <button
-                        key={s}
-                        type="button"
-                        className={size === s ? "size-button active" : "size-button"}
-                        onClick={() => setSize(s)}
-                      >
-                        {s}
-                      </button>
-                    ))}
+                    {(sizeType === "letter" ? letterSizes : numberSizes).map(
+                      (s) => (
+                        <button
+                          key={s}
+                          type="button"
+                          className={
+                            size === s ? "size-button active" : "size-button"
+                          }
+                          onClick={() => setSize(s)}
+                        >
+                          {s}
+                        </button>
+                      )
+                    )}
                   </div>
                 </div>
                 <div className="gender-selector">
@@ -289,42 +302,54 @@ const validateForm = () => {
 
         {view === "productList" && (
           <section className="product-list">
-            <h2>Productos creados</h2>
-            <div className="product-grid">
-              {products.map((product) => (
-                <div key={product.id} className="product-card">
-                  <h3>{product.title}</h3>
-                  <p>{product.description}</p>
-                  <p>
-                    <strong>Precio:</strong>{" "}
-                    {formatPrice(product.price.toString())}
-                  </p>
-                  <p>
-                    <strong>Talla:</strong> {product.size}
-                  </p>
-                  <p>
-                    <strong>Género:</strong> {product.gender}
-                  </p>
-                  <p>
-                    <strong>Stock:</strong> {product.stock}
-                  </p>
-                  <a
-                    href={product.fileURL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Ver Archivo
-                  </a>
-                  <button
-                    onClick={() => {
-                      setSelectedProduct(product);
-                      setIsDeleteProductModalOpen(true);
-                    }}
-                  >
-                    Eliminar
-                  </button>
-                </div>
-              ))}
+            <div className="products-container">
+              <h2 className="products-title">Productos creados</h2>
+              <div className="product-grid">
+                {products.map((product) => (
+                  <div key={product.id} className="product-card">
+                    <div className="product-content">
+                      <h3>{product.title}</h3>
+                      <p className="product-description">
+                        {product.description}
+                      </p>
+                      <div className="product-details">
+                        <p>
+                          <strong>Precio:</strong>{" "}
+                          {formatPrice(product.price.toString())}
+                        </p>
+                        <p>
+                          <strong>Talla:</strong> {product.size}
+                        </p>
+                        <p>
+                          <strong>Género:</strong> {product.gender}
+                        </p>
+                        <p>
+                          <strong>Stock:</strong> {product.stock}
+                        </p>
+                      </div>
+                      <div className="product-actions">
+                        <a
+                          href={product.fileURL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="view-file-btn"
+                        >
+                          Ver Archivo
+                        </a>
+                        <button
+                          className="delete-btn"
+                          onClick={() => {
+                            setSelectedProduct(product);
+                            setIsDeleteProductModalOpen(true);
+                          }}
+                        >
+                          Eliminar
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {isDeleteProductModalOpen && (
