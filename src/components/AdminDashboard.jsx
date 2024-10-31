@@ -8,7 +8,12 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { onAuthStateChanged } from "firebase/auth";
 import "../styles/AdminDashboard.css";
@@ -185,15 +190,15 @@ const AdminDashboard = () => {
         // Get the file reference from the fileURL
         const fileURL = selectedProduct.fileURL;
         const fileRef = ref(storage, fileURL);
-  
+
         // Delete the file from storage
         await deleteObject(fileRef);
         console.log("File deleted successfully");
-  
+
         // Now delete the product document from Firestore
         await deleteDoc(doc(db, "products", selectedProduct.id));
         console.log("Product deleted successfully");
-        
+
         // Close the modal and refresh the product list
         setIsDeleteProductModalOpen(false);
         fetchProducts();

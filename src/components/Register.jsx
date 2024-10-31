@@ -41,7 +41,7 @@ const Register = () => {
         name: name,
         phone: phone,
         email: email,
-        role: "cliente" // Asignar el rol predeterminado como "cliente"
+        role: "user"
       });
 
       // Redirigir al dashboard de cliente

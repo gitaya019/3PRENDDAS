@@ -88,7 +88,7 @@ const Header = () => {
   const handleAccountClick = () => {
     if (userRole === "admin") {
       navigate("/admin-dashboard"); // Ruta para admin
-    } else if (userRole === "client") {
+    } else if (userRole === "user") {
       navigate("/dashboard"); // Ruta para cliente
     }
     setUserMenuOpen(false); // Cerrar el menú después de redirigir
