@@ -12,7 +12,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { onAuthStateChanged } from "firebase/auth";
 import "../styles/AdminDashboard.css";
-import Spinner from "./Spinner"; // Suponiendo que tienes un componente Spinner
+import Spinner from "./Spinner";
 
 const AdminDashboard = () => {
   const [view, setView] = useState("products");
@@ -20,6 +20,8 @@ const AdminDashboard = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [size, setSize] = useState("");
+  const [sizeType, setSizeType] = useState("letter"); // "letter" o "number"
+  const [gender, setGender] = useState("unisex");
   const [file, setFile] = useState(null);
   const [stock, setStock] = useState("");
   const [products, setProducts] = useState([]);
@@ -28,34 +30,50 @@ const AdminDashboard = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isEditUserModalOpen, setIsEditUserModalOpen] = useState(false);
   const [isDeleteUserModalOpen, setIsDeleteUserModalOpen] = useState(false);
-  const [isDeleteProductModalOpen, setIsDeleteProductModalOpen] =
-    useState(false);
-  const [isLoading, setIsLoading] = useState(false); // Spinner state
+  const [isDeleteProductModalOpen, setIsDeleteProductModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
 
-  // Chequear si el usuario está autenticado al recargar la página
+  const letterSizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
+  const numberSizes = Array.from({ length: 13 }, (_, i) => (i + 30).toString());
+
+  const formatPrice = (value) => {
+    const number = parseInt(value.replace(/\D/g, ""));
+    return new Intl.NumberFormat("es-CO", {
+      style: "currency",
+      currency: "COP",
+      minimumFractionDigits: 0,
+    }).format(number);
+  };
+
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
       } else {
-        window.location.href = "/login"; // Redirigir al login si no hay usuario
+        window.location.href = "/login";
       }
     });
   }, []);
 
-  // Validaciones simples
-  const validateForm = () => {
-    if (!productTitle || !description || !price || !size || !stock || !file) {
-      alert("Todos los campos son obligatorios.");
-      return false;
-    }
-    if (isNaN(price) || isNaN(stock)) {
-      alert("Precio y stock deben ser números.");
-      return false;
-    }
-    return true;
-  };
+const validateForm = () => {
+  // Verificar que todos los campos estén llenos
+  if (!productTitle || !description || !price || !size || !stock || !file || !gender) {
+    alert("Todos los campos son obligatorios.");
+    return false;
+  }
+
+  // Comprobar que el precio y el stock sean números
+  const numericPrice = parseFloat(price.replace(/[^\d.-]/g, ""));
+  const numericStock = parseInt(stock, 10);
+
+  if (isNaN(numericPrice) || isNaN(numericStock)) {
+    alert("Precio y stock deben ser números.");
+    return false;
+  }
+
+  return true;
+};
 
   const handleFileChange = (e) => setFile(e.target.files[0]);
 
@@ -93,21 +111,26 @@ const AdminDashboard = () => {
         downloadURL = await getDownloadURL(storageRef);
       }
 
+      const numericPrice = parseFloat(price.replace(/[^\d]/g, ""));
+
       await addDoc(collection(db, "products"), {
         id: productId,
         title: productTitle,
         description,
-        price,
+        price: numericPrice,
         size,
+        sizeType,
+        gender,
         stock,
         fileURL: downloadURL,
       });
 
-      // Resetear campos
       setProductTitle("");
       setDescription("");
       setPrice("");
       setSize("");
+      setSizeType("letter");
+      setGender("unisex");
       setStock("");
       setFile(null);
       alert("Producto creado exitosamente.");
@@ -116,7 +139,7 @@ const AdminDashboard = () => {
       console.error("Error creando el producto:", error);
       alert("Hubo un error creando el producto.");
     } finally {
-      setIsLoading(false); // Detener spinner
+      setIsLoading(false);
     }
   };
 
@@ -160,7 +183,7 @@ const AdminDashboard = () => {
     fetchUsers();
   }, []);
 
-  if (!user) return <Spinner />; // Muestra el spinner hasta que la autenticación esté completa
+  if (!user) return <Spinner />;
 
   return (
     <div className="admin-dashboard">
@@ -169,6 +192,7 @@ const AdminDashboard = () => {
         <aside className="sidebar">
           <ul>
             <li onClick={() => setView("products")}>Crear Producto</li>
+            <li onClick={() => setView("productList")}>Lista de Productos</li>
             <li onClick={() => setView("users")}>Gestionar Usuarios</li>
           </ul>
         </aside>
@@ -194,24 +218,61 @@ const AdminDashboard = () => {
                   required
                 />
                 <input
-                  type="number"
+                  type="text"
                   placeholder="Precio"
                   value={price}
-                  onChange={(e) => setPrice(e.target.value)}
+                  onChange={(e) => {
+                    const formattedPrice = formatPrice(e.target.value);
+                    setPrice(formattedPrice);
+                  }}
                   required
                 />
+                <div className="size-selector">
+                  <div className="size-type-toggle">
+                    <button
+                      type="button"
+                      className={sizeType === "letter" ? "active" : ""}
+                      onClick={() => setSizeType("letter")}
+                    >
+                      Tallas (XS-XXXL)
+                    </button>
+                    <button
+                      type="button"
+                      className={sizeType === "number" ? "active" : ""}
+                      onClick={() => setSizeType("number")}
+                    >
+                      Tallas Numéricas
+                    </button>
+                  </div>
+                  <div className="size-buttons">
+                    {(sizeType === "letter" ? letterSizes : numberSizes).map((s) => (
+                      <button
+                        key={s}
+                        type="button"
+                        className={size === s ? "size-button active" : "size-button"}
+                        onClick={() => setSize(s)}
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="gender-selector">
+                  <select
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
+                    required
+                  >
+                    <option value="unisex">Unisex</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="femenino">Femenino</option>
+                  </select>
+                </div>
                 <input
                   type="number"
                   placeholder="Stock"
                   value={stock}
                   onChange={(e) => setStock(e.target.value)}
-                  required
-                />
-                <input
-                  type="text"
-                  placeholder="Tamaño"
-                  value={size}
-                  onChange={(e) => setSize(e.target.value)}
                   required
                 />
                 <input
@@ -223,7 +284,11 @@ const AdminDashboard = () => {
                 <button type="submit">Crear Producto</button>
               </form>
             )}
-            {/* Listado de productos creados */}
+          </section>
+        )}
+
+        {view === "productList" && (
+          <section className="product-list">
             <h2>Productos creados</h2>
             <div className="product-grid">
               {products.map((product) => (
@@ -231,12 +296,18 @@ const AdminDashboard = () => {
                   <h3>{product.title}</h3>
                   <p>{product.description}</p>
                   <p>
-                    <strong>Precio:</strong> ${product.price}
+                    <strong>Precio:</strong>{" "}
+                    {formatPrice(product.price.toString())}
                   </p>
                   <p>
-                    <strong>Tamaño:</strong> {product.size}
+                    <strong>Talla:</strong> {product.size}
                   </p>
-                  <p><strong>Stock:</strong> {product.stock}</p>
+                  <p>
+                    <strong>Género:</strong> {product.gender}
+                  </p>
+                  <p>
+                    <strong>Stock:</strong> {product.stock}
+                  </p>
                   <a
                     href={product.fileURL}
                     target="_blank"
@@ -287,15 +358,9 @@ const AdminDashboard = () => {
                     <strong>Teléfono:</strong> {user.phone}
                   </p>
                   <p>
-                  <strong>Rol:</strong> {user.role}
+                    <strong>Rol:</strong> {user.role}
                   </p>
-                  <button
-                    onClick={() => {
-                      handleEditUser(user);
-                    }}
-                  >
-                    Editar
-                  </button>
+                  <button onClick={() => handleEditUser(user)}>Editar</button>
                   <button
                     onClick={() => {
                       setSelectedUser(user);
@@ -308,7 +373,6 @@ const AdminDashboard = () => {
               ))}
             </div>
 
-            {/* Modal para editar usuario */}
             {isEditUserModalOpen && (
               <div className="modal">
                 <div className="modal-content">
@@ -363,7 +427,6 @@ const AdminDashboard = () => {
               </div>
             )}
 
-            {/* Modal para eliminar usuario */}
             {isDeleteUserModalOpen && (
               <div className="modal">
                 <div className="modal-content">
