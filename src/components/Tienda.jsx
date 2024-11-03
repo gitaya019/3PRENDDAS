@@ -1,14 +1,15 @@
 import { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { db } from '../firebase-config';
 import { collection, getDocs } from 'firebase/firestore';
 import '../styles/Tienda.css';
 import PropTypes from 'prop-types';
+import  Spinner  from './Spinner';
 
 const ThreeScene = ({ modelURL }) => {
   const mountRef = useRef(null);
+  const [loading, setLoading] = useState(true); // Estado para manejar la carga
 
   useEffect(() => {
     const currentMount = mountRef.current;
@@ -18,7 +19,7 @@ const ThreeScene = ({ modelURL }) => {
     const aspectRatio = 1;
     const camera = new THREE.PerspectiveCamera(45, aspectRatio, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(300, 300); 
+    renderer.setSize(300, 300);
     renderer.setPixelRatio(window.devicePixelRatio);
     currentMount.appendChild(renderer.domElement);
 
@@ -59,26 +60,21 @@ const ThreeScene = ({ modelURL }) => {
         // Ajustar la cámara para que el modelo esté visible
         const maxDimension = Math.max(size.x, size.y, size.z);
         camera.position.z = maxDimension * 1.5; // Ajustar distancia según el tamaño del modelo
+        
+        // Marcar la carga como completa
+        setLoading(false); // Establecer loading en false una vez que se carga el modelo
       },
       (xhr) => {
         console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
       },
       (error) => {
         console.log('Error al cargar el modelo:', error);
+        setLoading(false); // Asegúrate de marcar la carga como completa en caso de error
       }
     );
 
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.25;
-    controls.enableZoom = true;
-    controls.maxPolarAngle = Math.PI / 2;
-    controls.minPolarAngle = Math.PI / 4;
-
     const animate = () => {
       requestAnimationFrame(animate);
-      group.rotation.y += 0.01;
-      controls.update();
       renderer.render(scene, camera);
     };
     animate();
@@ -88,7 +84,11 @@ const ThreeScene = ({ modelURL }) => {
     };
   }, [modelURL]);
 
-  return <div ref={mountRef} style={{ width: '300px', height: '300px', overflow: 'hidden' }} />;
+  return (
+    <div ref={mountRef} style={{ width: '300px', height: '300px', overflow: 'hidden' }}>
+      {loading && <Spinner />} {/* Mostrar el spinner mientras se carga */}
+    </div>
+  );
 };
 
 const Tienda = () => {
