@@ -19,10 +19,10 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Inicio />} />
+          <Route path="/tienda" element={<Tienda />}/>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/tienda" element={<Tienda />}/>
           <Route
             path="/admin-dashboard"
             element={
