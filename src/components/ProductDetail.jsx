@@ -9,6 +9,8 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedColor, setSelectedColor] = useState('#0073e6');
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -43,6 +45,9 @@ const ProductDetail = () => {
 
     fetchProduct();
   }, [id]);
+
+  const sizes = ["S", "M", "L", "XL", "XXL", "XXXL"];
+  const colors = ["#0073e6", "#44bd32", "#7f8fa6", "#fed330", "#f7f1e3", "#EA2027", "#0000", "#2f3542"];
 
   if (loading) {
     return (
@@ -80,15 +85,41 @@ const ProductDetail = () => {
       </button>
       <div className="product-detail-grid">
         <div className="product-model">
-          <ThreeSceneDetail modelURL={product.fileURL} />
+          <ThreeSceneDetail modelURL={product.fileURL} color={selectedColor} />
         </div>
         <div className="product-info-detail">
           <h1 className="product-title">{product.title}</h1>
-          <p className="product-price">{typeof product.price === 'number' ? product.price.toLocaleString() : product.price}</p>
+          <p className="product-price">${typeof product.price === 'number' ? product.price.toLocaleString() : product.price}</p>
           <div className="product-metadata">
             <p><strong>Género:</strong> {product.gender}</p>
-            <p><strong>Talla:</strong> {product.size}</p>
             <p><strong>Stock:</strong> {product.stock} unidades</p>
+          </div>
+          <div className="product-sizes">
+            <h2>Talla</h2>
+            <div className="size-buttons-container">
+              {sizes.map(size => (
+                <button 
+                  key={size} 
+                  className={`size-button ${selectedSize === size ? 'selected' : ''}`}
+                  onClick={() => setSelectedSize(size)}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="product-colors">
+            <h2>Color</h2>
+            <div className="color-buttons-container">
+              {colors.map(color => (
+                <button 
+                  key={color} 
+                  className={`color-button ${selectedColor === color ? 'selected' : ''}`}
+                  style={{ backgroundColor: color }}
+                  onClick={() => setSelectedColor(color)}
+                />
+              ))}
+            </div>
           </div>
           <div className="product-description">
             <h2>Descripción</h2>

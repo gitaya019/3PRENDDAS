@@ -6,7 +6,7 @@ import '../styles/ProductDetail.css';
 import Spinner from './Spinner'; // Asegúrate de que Spinner esté correctamente importado
 import PropTypes from 'prop-types'; // Importar PropTypes
 
-const ThreeSceneTienda = ({ modelURL }) => {
+const ThreeSceneTienda = ({ modelURL, color }) => {
   const mountRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const groupRef = useRef(null); // Referencia al grupo para limpiar objetos
@@ -75,7 +75,7 @@ const ThreeSceneTienda = ({ modelURL }) => {
         (object) => {
           object.traverse((child) => {
             if (child.isMesh) {
-              child.material = new THREE.MeshStandardMaterial({ color: 0x0073e6 });
+              child.material = new THREE.MeshStandardMaterial({ color });
             }
           });
 
@@ -122,7 +122,7 @@ const ThreeSceneTienda = ({ modelURL }) => {
         }
       });
     };
-  }, [modelURL]);
+  }, [modelURL, color]);
 
   return (
     <div ref={mountRef} style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
@@ -134,6 +134,7 @@ const ThreeSceneTienda = ({ modelURL }) => {
 // Validación de props
 ThreeSceneTienda.propTypes = {
   modelURL: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
 };
 
 export default ThreeSceneTienda;
