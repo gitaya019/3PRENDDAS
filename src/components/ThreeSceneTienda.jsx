@@ -18,7 +18,7 @@ const ThreeSceneTienda = ({ modelURL }) => {
     const camera = new THREE.PerspectiveCamera(45, aspectRatio, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(300, 300);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(2, window.devicePixelRatio)); // Limitar a un máximo de 2 para optimizar en pantallas de alta densidad
     currentMount.appendChild(renderer.domElement);
 
     scene.background = null;
@@ -52,33 +52,46 @@ const ThreeSceneTienda = ({ modelURL }) => {
 
         // Centrar el modelo
         object.position.sub(center); // Mover el modelo al origen
-
         group.add(object);
 
         // Ajustar la cámara para que el modelo esté visible
         const maxDimension = Math.max(size.x, size.y, size.z);
         camera.position.z = maxDimension * 1.5; // Ajustar distancia según el tamaño del modelo
         
-        // Marcar la carga como completa
-        setLoading(false); // Establecer loading en false una vez que se carga el modelo
+        setLoading(false); // Marcar la carga como completa
+        renderer.render(scene, camera); // Renderizar una vez
       },
-      (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
-      },
+      undefined,
       (error) => {
         console.log('Error al cargar el modelo:', error);
         setLoading(false); // Asegúrate de marcar la carga como completa en caso de error
       }
     );
 
-    const animate = () => {
-      requestAnimationFrame(animate);
-      renderer.render(scene, camera);
+    // Manejar el ajuste de tamaño del renderer
+    const handleResize = () => {
+      const { clientWidth, clientHeight } = currentMount;
+      renderer.setSize(clientWidth, clientHeight);
+      camera.aspect = clientWidth / clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.render(scene, camera); // Renderizar tras cambio de tamaño
     };
-    animate();
 
+    window.addEventListener('resize', handleResize);
+
+    // Limpieza al desmontar
     return () => {
+      window.removeEventListener('resize', handleResize);
       currentMount.removeChild(renderer.domElement);
+
+      scene.traverse((child) => {
+        if (child.isMesh) {
+          child.geometry.dispose();
+          child.material.dispose();
+        }
+      });
+
+      renderer.dispose();
     };
   }, [modelURL]);
 

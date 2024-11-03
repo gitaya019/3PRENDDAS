@@ -25,7 +25,6 @@ const Tienda = () => {
           };
         });
         
-        console.log("Productos cargados:", productList);
         setProducts(productList);
       } catch (error) {
         console.error("Error al obtener productos:", error);
