@@ -17,9 +17,6 @@ const ThreeScene = ({ modelURL }) => {
     const scene = new THREE.Scene();
     const aspectRatio = 1;
     const camera = new THREE.PerspectiveCamera(45, aspectRatio, 0.1, 1000);
-    camera.position.z = 12;
-    camera.position.y = 1.5;
-
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(300, 300); 
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -43,15 +40,25 @@ const ThreeScene = ({ modelURL }) => {
     objLoader.load(
       modelURL,
       (object) => {
-        object.scale.set(0.35, 0.35, 0.35);
-        object.position.set(2, -3.4, 0);
-        group.add(object);
-
         object.traverse((child) => {
           if (child.isMesh) {
             child.material = new THREE.MeshStandardMaterial({ color: 0x0073e6 });
           }
         });
+
+        // Calcular la caja envolvente del modelo
+        const box = new THREE.Box3().setFromObject(object);
+        const center = box.getCenter(new THREE.Vector3());
+        const size = box.getSize(new THREE.Vector3());
+
+        // Centrar el modelo
+        object.position.sub(center); // Mover el modelo al origen
+
+        group.add(object);
+
+        // Ajustar la cámara para que el modelo esté visible
+        const maxDimension = Math.max(size.x, size.y, size.z);
+        camera.position.z = maxDimension * 1.5; // Ajustar distancia según el tamaño del modelo
       },
       (xhr) => {
         console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
