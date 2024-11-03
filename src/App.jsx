@@ -1,4 +1,3 @@
-// App.jsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Inicio from "./components/Inicio";
@@ -6,6 +5,7 @@ import Footer from "./components/Footer";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Tienda from "./components/Tienda";
+import ProductDetail from "./components/ProductDetail";
 import ResetPassword from "./components/ResetPassword";
 import "./styles/App.css";
 import AdminDashboard from "./components/AdminDashboard";
@@ -19,7 +19,8 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Inicio />} />
-          <Route path="/tienda" element={<Tienda />}/>
+          <Route path="/tienda" element={<Tienda />} />
+          <Route path="/producto/:id" element={<ProductDetail />} /> 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/reset-password" element={<ResetPassword />} />
