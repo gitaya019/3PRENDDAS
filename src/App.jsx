@@ -11,6 +11,8 @@ import "./styles/App.css";
 import AdminDashboard from "./components/AdminDashboard";
 import UserDashboard from "./components/UserDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
+import TermsConditions from "./components/TermsPage";
+import PrivacyPolicy from "./components/PolicyPage";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/terms" element={ <TermsConditions />}/>
+          <Route path="/policy" element={ <PrivacyPolicy />}/>
           <Route
             path="/admin-dashboard"
             element={
