@@ -21,7 +21,6 @@ const ProductDetail = () => {
       }
 
       try {
-        console.log("Buscando producto con ID de Firestore:", id);
         const docRef = doc(db, 'products', id);
         const docSnap = await getDoc(docRef);
         
@@ -31,9 +30,7 @@ const ProductDetail = () => {
             firebaseId: docSnap.id,
             ...productData,
           });
-          console.log("Producto encontrado:", productData);
         } else {
-          console.log("No se encontró el producto con ID:", id);
           setError("Producto no encontrado");
         }
       } catch (error) {
