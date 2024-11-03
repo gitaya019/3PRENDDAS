@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase-config';
-import ThreeSceneTienda from './ThreeSceneTienda';
+import ThreeSceneDetail from './ThreeSceneDetail';
 import '../styles/ProductDetail.css';
 
 const ProductDetail = () => {
@@ -80,7 +80,7 @@ const ProductDetail = () => {
       </button>
       <div className="product-detail-grid">
         <div className="product-model">
-          <ThreeSceneTienda modelURL={product.fileURL} />
+          <ThreeSceneDetail modelURL={product.fileURL} />
         </div>
         <div className="product-info-detail">
           <h1 className="product-title">{product.title}</h1>
