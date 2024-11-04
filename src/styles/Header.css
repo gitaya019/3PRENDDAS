@@ -161,6 +161,18 @@ header {
   background-color: #f0f0f0;
 }
 
+.cart-count {
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 0.2em 0.6em;
+  font-size: 0.6em;
+  position: absolute;
+  top: -5px;
+  right: -10px;
+}
+
+
 /* Media queries para pantallas pequeñas */
 @media (max-width: 768px) {
   .menu {
