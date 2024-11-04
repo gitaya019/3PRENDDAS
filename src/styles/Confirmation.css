@@ -1,0 +1,128 @@
+.confirmation-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  
+  .confirmation-container h2 {
+    color: #2c3e50;
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    font-weight: 600;
+  }
+  
+  .confirmation-details {
+    padding: 1.5rem;
+    background: #f8fafc;
+    border-radius: 12px;
+  }
+  
+  .confirmation-details h3 {
+    color: #334155;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+  
+  .confirmation-details h4 {
+    color: #475569;
+    font-size: 1.2rem;
+    margin: 1.5rem 0 1rem;
+    font-weight: 500;
+  }
+  
+  .confirmation-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  }
+  
+  .confirmation-item p {
+    margin: 0;
+    color: #64748b;
+  }
+  
+  .color-swatch {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-left: 8px;
+    border: 1px solid #e2e8f0;
+    vertical-align: middle;
+  }
+  
+  .confirmation-summary {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  }
+  
+  .confirmation-summary p {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem 0;
+    color: #64748b;
+    font-weight: 500;
+  }
+  
+  .confirmation-summary p:last-child {
+    font-size: 1.2rem;
+    color: #334155;
+    font-weight: 600;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .confirmation-details p {
+    margin: 0.5rem 0;
+    color: #64748b;
+  }
+  
+  .home-button {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 2rem auto 0;
+    padding: 1rem 2rem;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .home-button:hover {
+    background: #2563eb;
+  }
+  
+  @media (max-width: 640px) {
+    .confirmation-container {
+      margin: 1rem;
+      padding: 1rem;
+    }
+  
+    .confirmation-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .confirmation-item p {
+      margin: 0.25rem 0;
+    }
+  }

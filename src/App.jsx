@@ -14,7 +14,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import TermsConditions from "./components/TermsPage";
 import PrivacyPolicy from "./components/PolicyPage";
 import Cart from "./components/Cart";
-
+import Checkout from "./components/Checkout";
+import Confirmation from "./components/Confirmation";
 
 function App() {
   return (
@@ -24,13 +25,14 @@ function App() {
         <Routes>
           <Route path="/" element={<Inicio />} />
           <Route path="/tienda" element={<Tienda />} />
-          <Route path="/producto/:id" element={<ProductDetail />} /> 
+          <Route path="/producto/:id" element={<ProductDetail />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/confirmation" element={<Confirmation/>} />
           <Route path="/carrito" element={<Cart />} />
           <Route path="/register" element={<Register />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/terms" element={ <TermsConditions />}/>
-          <Route path="/policy" element={ <PrivacyPolicy />}/>
+          <Route path="/terms" element={<TermsConditions />} />
+          <Route path="/policy" element={<PrivacyPolicy />} />
           <Route
             path="/admin-dashboard"
             element={
@@ -44,6 +46,14 @@ function App() {
             element={
               <ProtectedRoute roleRequired="user">
                 <UserDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute roleRequired="user">
+                <Checkout />
               </ProtectedRoute>
             }
           />

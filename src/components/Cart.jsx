@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 import '../styles/Cart.css';
 import camisa from '../assets/camisa.png';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
+  const navigate = useNavigate(); // Crea una instancia de useNavigate
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -31,8 +33,8 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
-    // Implementar lógica de checkout
-    console.log('Procesando checkout...');
+    // Redirige a la página de checkout
+    navigate('/checkout');
   };
 
   return (
