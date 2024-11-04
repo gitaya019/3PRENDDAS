@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/Confirmation.css";
+import { NavLink } from 'react-router-dom'; // Importamos NavLink
 
 const Confirmation = () => {
   const location = useLocation();
@@ -42,6 +43,9 @@ const Confirmation = () => {
           <p>Código Postal: {orderDetails.shippingInfo.postalCode}</p>
           <p>Teléfono: {orderDetails.shippingInfo.phoneNumber}</p>
           <p>Método de Envío: {orderDetails.shippingMethod}</p>
+          <div className="volver-tienda-btn">
+          <NavLink to="/tienda" className="btn-volver">Volver a la tienda</NavLink> {/* Cambiado a NavLink */}
+          </div>
         </div>
       ) : (
         <p>Cargando detalles del pedido...</p>

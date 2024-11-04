@@ -78,6 +78,10 @@ const ProductDetail = () => {
 
     localStorage.setItem('cart', JSON.stringify(storedCart));
     alert("Producto agregado al carrito.");
+
+    navigate('/carrito');
+    window.location.reload();
+
   };
 
   if (loading) {

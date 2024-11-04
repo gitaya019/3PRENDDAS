@@ -64,6 +64,7 @@ const Checkout = () => {
 
       localStorage.removeItem("cart");
       navigate("/confirmation", { state: { orderDetails: orderData } });
+      window.location.reload();
     } catch (error) {
       console.error("Error al registrar el pedido:", error);
     }

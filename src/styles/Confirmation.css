@@ -110,6 +110,38 @@
   .home-button:hover {
     background: #2563eb;
   }
+
+  .volver-tienda-btn {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+  }
+  
+  .btn-volver {
+    background-color: #2563eb;
+    color: #e2e8f0;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+    border: none;
+  }
+  
+  .btn-volver:hover {
+    background-color: #1e40af; /* color de fondo más oscuro en hover */
+    color: #f1f5f9; /* color de texto más claro en hover */
+    transform: scale(1.05); /* efecto de agrandado */
+    text-decoration: none;
+  }
+  
+  /* Efecto adicional opcional de sombra al hacer clic */
+  .btn-volver:active {
+    transform: scale(0.95);
+    box-shadow: inset 0px 4px 6px rgba(0, 0, 0, 0.2);
+  }
   
   @media (max-width: 640px) {
     .confirmation-container {
