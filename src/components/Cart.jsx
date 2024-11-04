@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import '../styles/Cart.css';
+import camisa from '../assets/camisa.png';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -44,7 +45,7 @@ const Cart = () => {
           <ul>
             {cartItems.map((item, index) => (
               <li key={index} className="cart-item">
-                <img src={item.image} alt={item.title} className="cart-item-image" />
+                <img src={camisa} alt={item.title} className="cart-item-image" />
                 <div className="cart-item-details">
                   <p>{item.title}</p>
                   <p>Talla: {item.size}</p>
