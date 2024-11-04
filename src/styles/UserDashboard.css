@@ -1,0 +1,127 @@
+.dashboard-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+  }
+  
+  .dashboard-container h1 {
+    font-size: 2.5rem;
+    color: #2d3748;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+  
+  .dashboard-container p {
+    color: #4a5568;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .orders-list {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+  
+  .order-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .order-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .order-card h3 {
+    font-size: 1.25rem;
+    color: #2d3748;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e2e8f0;
+  }
+  
+  .order-card p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    color: #4a5568;
+  }
+  
+  .order-card strong {
+    color: #2d3748;
+    font-weight: 600;
+  }
+  
+  .items-list {
+    margin-top: 1.5rem;
+  }
+  
+  .items-list h4 {
+    font-size: 1.1rem;
+    color: #2d3748;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  
+  .item-card {
+    background: #f7fafc;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .item-card p {
+    margin: 0.25rem 0;
+    font-size: 0.95rem;
+  }
+  
+  /* Estilos responsive */
+  @media (max-width: 768px) {
+    .dashboard-container {
+      margin: 1rem auto;
+      padding: 0 1rem;
+    }
+  
+    .dashboard-container h1 {
+      font-size: 2rem;
+    }
+  
+    .orders-list {
+      grid-template-columns: 1fr;
+    }
+  
+    .order-card {
+      padding: 1.25rem;
+    }
+  }
+  
+  /* Animaciones para los elementos */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .order-card {
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  /* Estilos para cuando no hay órdenes */
+  .orders-list p:only-child {
+    text-align: center;
+    padding: 2rem;
+    background: #f7fafc;
+    border-radius: 1rem;
+    color: #718096;
+    font-size: 1.1rem;
+    grid-column: 1 / -1;
+  }
