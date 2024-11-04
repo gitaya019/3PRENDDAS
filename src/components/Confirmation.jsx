@@ -8,13 +8,11 @@ const Confirmation = () => {
   const [orderDetails, setOrderDetails] = useState(null);
 
   useEffect(() => {
-    // Asegúrate de que la información del pedido está disponible en el estado
     const state = location.state;
     if (state && state.orderDetails) {
       setOrderDetails(state.orderDetails);
     } else {
-      // Redirige a la página de carrito si no hay detalles del pedido
-      navigate("/cart");
+      navigate("/carrito");
     }
   }, [location, navigate]);
 
@@ -42,14 +40,11 @@ const Confirmation = () => {
           <p>Dirección: {orderDetails.shippingInfo.address}</p>
           <p>Ciudad: {orderDetails.shippingInfo.city}</p>
           <p>Código Postal: {orderDetails.shippingInfo.postalCode}</p>
-          <p>Número de Teléfono: {orderDetails.shippingInfo.phoneNumber}</p>
+          <p>Teléfono: {orderDetails.shippingInfo.phoneNumber}</p>
           <p>Método de Envío: {orderDetails.shippingMethod}</p>
-          <button onClick={() => navigate("/")} className="home-button">
-            Volver a la Página Principal
-          </button>
         </div>
       ) : (
-        <p>Cargando...</p>
+        <p>Cargando detalles del pedido...</p>
       )}
     </div>
   );

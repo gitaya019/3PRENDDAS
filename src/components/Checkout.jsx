@@ -4,7 +4,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { db } from "../firebase-config";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import "../styles/Checkout.css";
-import camisa from "../assets/camisa.png"; // Imagen de ejemplo para productos
+import camisa from "../assets/camisa.png";
 
 const Checkout = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -28,7 +28,7 @@ const Checkout = () => {
       if (currentUser) {
         setUser(currentUser);
       } else {
-        navigate("/login"); // Redirige a login si no está autenticado
+        navigate("/login");
       }
     });
   }, [navigate]);
@@ -62,8 +62,8 @@ const Checkout = () => {
       const orderRef = await addDoc(collection(db, "orders"), orderData);
       console.log("Pedido registrado con ID:", orderRef.id);
 
-      localStorage.removeItem("cart"); // Vacía el carrito
-      navigate("/confirmation");
+      localStorage.removeItem("cart");
+      navigate("/confirmation", { state: { orderDetails: orderData } });
     } catch (error) {
       console.error("Error al registrar el pedido:", error);
     }
