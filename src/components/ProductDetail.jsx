@@ -49,6 +49,37 @@ const ProductDetail = () => {
   const sizes = ["S", "M", "L", "XL", "XXL", "XXXL"];
   const colors = ["#0073e6", "#44bd32", "#7f8fa6", "#fed330", "#f7f1e3", "#EA2027", "#0000", "#2f3542"];
 
+  const addToCart = () => {
+    if (!selectedSize) {
+      alert("Por favor, selecciona una talla.");
+      return;
+    }
+
+    const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+    const newItem = {
+      id: product.firebaseId,
+      title: product.title,
+      image: product.imageURL,  // Asegúrate de tener una imagen para el producto
+      size: selectedSize,
+      color: selectedColor,
+      price: product.price,
+      quantity: 1
+    };
+
+    const existingItemIndex = storedCart.findIndex(
+      item => item.id === newItem.id && item.size === newItem.size && item.color === newItem.color
+    );
+
+    if (existingItemIndex >= 0) {
+      storedCart[existingItemIndex].quantity += 1;
+    } else {
+      storedCart.push(newItem);
+    }
+
+    localStorage.setItem('cart', JSON.stringify(storedCart));
+    alert("Producto agregado al carrito.");
+  };
+
   if (loading) {
     return (
       <div className="loading-container">
@@ -125,7 +156,7 @@ const ProductDetail = () => {
             <h2>Descripción</h2>
             <p>{product.description}</p>
           </div>
-          <button className="add-to-cart-btn">
+          <button onClick={addToCart} className="add-to-cart-btn">
             Agregar al carrito
           </button>
         </div>

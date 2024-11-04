@@ -13,6 +13,8 @@ import UserDashboard from "./components/UserDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import TermsConditions from "./components/TermsPage";
 import PrivacyPolicy from "./components/PolicyPage";
+import Cart from "./components/Cart";
+
 
 function App() {
   return (
@@ -24,6 +26,7 @@ function App() {
           <Route path="/tienda" element={<Tienda />} />
           <Route path="/producto/:id" element={<ProductDetail />} /> 
           <Route path="/login" element={<Login />} />
+          <Route path="/carrito" element={<Cart />} />
           <Route path="/register" element={<Register />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/terms" element={ <TermsConditions />}/>
