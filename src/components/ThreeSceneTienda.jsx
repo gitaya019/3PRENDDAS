@@ -104,7 +104,7 @@ const ThreeSceneTienda = ({ modelURL }) => {
 
 // Validación de props
 ThreeSceneTienda.propTypes = {
-  modelURL: PropTypes.string.isRequired, // Asegúrate de que modelURL sea una cadena y sea requerido
+  modelURL: PropTypes.string.isRequired, 
 };
 
 export default ThreeSceneTienda;

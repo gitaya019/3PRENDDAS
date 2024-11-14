@@ -12,10 +12,10 @@ const Banner = () => {
           3PRENDDAS es una plataforma de moda que permite visualizar ropa en 3D antes de comprarla. Ofrece una amplia variedad de estilos. 
           <br />Los verdaderos estilos urbanos.
         </p>
-        <NavLink to="/tienda" className="cta-button">Ir a Comprar</NavLink> {/* Cambiado a NavLink */}
+        <NavLink to="/tienda" className="cta-button">Ir a Comprar</NavLink>
       </div>
       <div className="banner-scene">
-        <ThreeScene /> {/* Aquí colocamos la escena 3D */}
+        <ThreeScene /> {/* Escena 3D */}
       </div>
     </section>
   );
