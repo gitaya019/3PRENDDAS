@@ -4,7 +4,7 @@ import { auth, db } from "../firebase-config";
 import { useNavigate, Link } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import '../styles/LoginRegister.css';
-import Spinner from "./spinner";
+import Spinner from "./Spinner";
 
 const Login = () => {
   const [email, setEmail] = useState("");
