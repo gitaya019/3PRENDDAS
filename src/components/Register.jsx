@@ -4,7 +4,7 @@ import { auth, db } from "../firebase-config";
 import { useNavigate, Link } from "react-router-dom";
 import { doc, setDoc } from "firebase/firestore"; // Cambiamos addDoc por setDoc
 import '../styles/LoginRegister.css';
-import Spinner from "./spinner";
+import Spinner from "./Spinner";
 
 
 const Register = () => {
